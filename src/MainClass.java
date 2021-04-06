@@ -1,28 +1,56 @@
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.concurrent.CyclicBarrier;
-import java.util.concurrent.Semaphore;
 
 public class MainClass {
-    public static final int CARS_COUNT = 4;
-    public static void main(String[] args) {
-        System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Подготовка!!!");
-        CyclicBarrier barrier = new CyclicBarrier(CARS_COUNT + 1);
-        Race race = new Race(new Road(60), new Tunnel(), new Road(40));
-        Car[] cars = new Car[CARS_COUNT];
-        for (int i = 0; i < cars.length; i++) {
-            cars[i] = new Car(race, 20 + (int) (Math.random() * 10), barrier);
-            new Thread(cars[i]).start();
+    public static void main(String[] args)
+    {
+//        int [] x = {1,3,5,4,8,8};
+//        int [] y = {1,4,2,4,1,4};
+//        getPartAfter4(x);
+//        check1And4(y);
+//        System.out.println(check1And4(y));
+    }
+    public static int [] getPartAfter4  (int  [] arr) throws RuntimeException {
+            int[] newArr = null;
+            int i = arr.length - 1;
+            int j = 0;
+            boolean found = false;
+            while (i >= 0 && !found) {
+                found = arr[i] == 4;
+                j = i;
+                i--;
+            }
+            if(found) {
+                newArr = new int[arr.length - j - 1];
+                for (i = j + 1; i < arr.length; i++) {
+                    newArr[i - j - 1] = arr[i];
+                }
+            } else {
+                throw new RuntimeException("В массиве нет числа 4");
+            }
+//            System.out.println(Arrays.toString( newArr));
+            return  newArr;
         }
-        try {
-            barrier.await();
-            System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка началась!!!");
-            barrier.await();
-            barrier.await();
-        } catch (Exception e) {
-            e.printStackTrace();
+        public static boolean check1And4(int[] arr) {
+        boolean check = true;
+        int count1 = 0;
+        int count4 = 0;
+        int i = 0;
+        while (i < arr.length && check) {
+            if(arr[i] == 1) {
+                check = true;
+                count1++;
+            } else {
+                if(arr[i] == 4) {
+                    check = true;
+                    count4++;
+                } else {
+                    check = false;
+                }
+            }
+            i++;
         }
-        System.out.println("ВАЖНОЕ ОБЪЯВЛЕНИЕ >>> Гонка закончилась!!!");
+        return check && count1 > 0 && count4 > 0;
+
     }
 }
 
